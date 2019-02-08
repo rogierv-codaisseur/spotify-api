@@ -33,4 +33,17 @@ router.get('/playlists/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
+router.post('/playlists', (req, res, next) => {
+  Customer.create(req.body)
+    .then(playlist => {
+      if (!playlist) {
+        return res.status(404).send({
+          message: `Playlist does not exists`
+        });
+      }
+      return res.status(201).send(playlist);
+    })
+    .catch(error => next(error));
+});
+
 module.exports = router;
