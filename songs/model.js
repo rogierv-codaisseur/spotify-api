@@ -18,6 +18,10 @@ const Song = sequelize.define(
       type: Sequelize.STRING,
       field: 'album',
       allowNull: false
+    },
+    playlistId: {
+      type: Sequelize.INTEGER,
+      field: 'playlist_id'
     }
   },
   {
