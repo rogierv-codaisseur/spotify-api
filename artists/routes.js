@@ -20,26 +20,4 @@ router.get('/artists', (req, res, next) => {
   }).then(artist => res.send(artist));
 });
 
-// router.get('/artists', (req, res, next) => {
-//   Song.findAll({
-//     group: ['artist'],
-//     attributes: [Sequelize.fn('COUNT', Sequelize.col('artist')), 'artist']
-//   }).then(result => res.send(result));
-// });
-
-// router.get('/artists', (req, res, next) => {
-//   Song.findAll({ where: { playlistId: 1 } })
-//     .then(playlist => Playlist.findAll({ where: { id: playlist.playlistId } }))
-//     .then(result => res.send(result));
-// });
-
-// router.get('/artists', (req, res, next) => {
-//   Playlist.findAll({
-//     include: [Song],
-//     where: { userId: 1 }
-//   }).then(playlists => {
-//     return res.send({ playlists });
-//   });
-// });
-
 module.exports = router;

@@ -18,7 +18,7 @@ router.post('/playlists/:id/songs', auth, (req, res, next) => {
         .then(song => {
           if (!song)
             return res.status(404).send({
-              message: `Song does not exist`
+              message: 'Song does not exist'
             });
           return res.status(201).send(song);
         })
@@ -31,7 +31,6 @@ router.put('/playlists/:id/songs/:songId', auth, (req, res, next) => {
   const playlistId = req.params.id;
   const songId = req.params.songId;
 
-  // Check if new playlist is valid
   if (req.body.playlistId)
     Playlist.findByPk(req.body.playlistId).then(newPlaylist => {
       if (!newPlaylist)
@@ -52,7 +51,7 @@ router.put('/playlists/:id/songs/:songId', auth, (req, res, next) => {
             return res.status(404).send({ message: 'Song does not exist' });
           return song
             .update(req.body)
-            .then(changedSong => res.send(changedSong));
+            .then(changedSong => res.status(201).send(changedSong));
         })
         .catch(error => next(error));
     })
@@ -75,7 +74,9 @@ router.delete('/playlists/:id/songs/:songId', auth, (req, res, next) => {
             return res.status(404).send({ message: 'Song does not exist' });
           return song
             .destroy()
-            .then(() => res.send({ message: 'Song has been deleted.' }));
+            .then(() =>
+              res.status(204).send({ message: 'Song has been deleted.' })
+            );
         })
         .catch(error => next(error));
     })
