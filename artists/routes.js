@@ -20,10 +20,10 @@ const router = new Router();
 //   }).then(artist => res.send(artist));
 // });
 
-router.get('/artists', (req, res, next) => {
-  Song.findAll({ where: { playlistId: 2 } })
-    .then(playlist => Playlist.findAll({ where: { id: playlist.playlistId } }))
-    .then(result => res.send(result));
-});
+// router.get('/artists', (req, res, next) => {
+//   Song.findAll({ where: { playlistId: 2 } })
+//     .then(playlist => Playlist.findAll({ where: { id: playlist.playlistId } }))
+//     .then(result => res.send(result));
+// });
 
 module.exports = router;
