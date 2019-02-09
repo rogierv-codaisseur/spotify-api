@@ -2,10 +2,11 @@ const { Router } = require('express');
 
 const Song = require('./model');
 const Playlist = require('../playlists/model');
+const auth = require('../auth/middleware');
 
 const router = new Router();
 
-router.post('/playlists/:id/songs', (req, res, next) => {
+router.post('/playlists/:id/songs', auth, (req, res, next) => {
   const playlistId = req.params.id;
   Playlist.findByPk(playlistId)
     .then(playlist => {

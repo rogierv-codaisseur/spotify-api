@@ -2,10 +2,11 @@ const { Router } = require('express');
 
 const Playlist = require('./model');
 const Song = require('../songs/model');
+const auth = require('../auth/middleware');
 
 const router = new Router();
 
-router.get('/playlists', (req, res, next) => {
+router.get('/playlists', auth, (req, res, next) => {
   Playlist.findAll()
     .then(playlists => {
       // TODO: check of this condition is required:
@@ -20,7 +21,7 @@ router.get('/playlists', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get('/playlists/:id', (req, res, next) => {
+router.get('/playlists/:id', auth, (req, res, next) => {
   Playlist.findByPk(req.params.id, { include: [Song] })
     .then(playlist => {
       if (!playlist) {
@@ -34,7 +35,7 @@ router.get('/playlists/:id', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.post('/playlists', (req, res, next) => {
+router.post('/playlists', auth, (req, res, next) => {
   Playlist.create(req.body)
     .then(playlist => {
       if (!playlist) {
@@ -47,7 +48,7 @@ router.post('/playlists', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.delete('/playlists/:id', (req, res, next) => {
+router.delete('/playlists/:id', auth, (req, res, next) => {
   Playlist.findByPk(req.params.id)
     .then(playlist => {
       if (!playlist) {
