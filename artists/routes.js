@@ -7,17 +7,29 @@ const auth = require('../auth/middleware');
 
 const router = new Router();
 
-// GET /artists: A user should be able to retrieve a list of artists, with all their songs (from the different playlists)
-
 router.get('/artists', (req, res, next) => {
-  Song.findAll({
-    attributes: [
-      Sequelize.fn('DISTINCT', Sequelize.col('artist')),
-      'artist',
-      'title'
-    ],
-    order: ['artist']
-  }).then(artist => res.send(artist));
+  Playlist.findAll({
+    where: { userId: 3 },
+    attributes: [],
+    include: {
+      model: Song,
+      attributes: ['artist', 'title']
+    }
+  })
+    .then(result => result[0].songs)
+    .then(result => groupBy(result, 'artist'))
+    .then(result => res.send(result));
 });
+
+function groupBy(objectArray, property) {
+  return objectArray.reduce(function(acc, obj) {
+    var key = obj[property];
+    if (!acc[key]) {
+      acc[key] = [];
+    }
+    acc[key].push(obj[property]);
+    return acc;
+  }, {});
+}
 
 module.exports = router;
