@@ -35,8 +35,6 @@ router.put('/playlists/:id/songs/:songId', auth, (req, res, next) => {
     Playlist.findByPk(req.body.playlistId).then(newPlaylist => {
       if (!newPlaylist)
         return res.status(404).send({ message: 'Invalid new playlist' });
-      if (newPlaylist.user_id !== req.user.id)
-        return res.status(404).send({ message: 'New playlist does not exist' });
     });
 
   Playlist.findByPk(playlistId)
@@ -75,7 +73,7 @@ router.delete('/playlists/:id/songs/:songId', auth, (req, res, next) => {
           return song
             .destroy()
             .then(() =>
-              res.status(204).send({ message: 'Song has been deleted.' })
+              res.status(200).send({ message: 'Song has been deleted.' })
             );
         })
         .catch(error => next(error));
