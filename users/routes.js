@@ -7,7 +7,11 @@ const { toJWT } = require('../auth/jwt');
 const router = new Router();
 
 router.post('/users', (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, password_confirmation } = req.body;
+  if (password !== password_confirmation)
+    return res.status(400).send({
+      message: 'Passwords do not match.'
+    });
   User.findOne({ where: { email } }).then(entity => {
     if (entity) {
       return res
@@ -19,9 +23,11 @@ router.post('/users', (req, res) => {
         email,
         password: bcrypt.hashSync(password, 10)
       };
-      User.create(user).then(res.send({ token: toJWT({ userId: user.id }) }));
+      return User.create(user).then(
+        res.send({ token: toJWT({ userId: user.id }) })
+      );
     } else {
-      res.status(400).send({
+      return res.status(400).send({
         message: 'Please supply a valid email and password'
       });
     }
