@@ -27,8 +27,6 @@ router.post('/playlists/:id/songs', auth, (req, res, next) => {
     .catch(error => next(error));
 });
 
-// PUT /playlists/:id/songs/:id: A user should be able to change song information, even move it to another playlist.
-
 router.put('/playlists/:id/songs/:songId', auth, (req, res, next) => {
   const playlistId = req.params.id;
   const songId = req.params.songId;
@@ -38,6 +36,8 @@ router.put('/playlists/:id/songs/:songId', auth, (req, res, next) => {
     Playlist.findByPk(req.body.playlistId).then(newPlaylist => {
       if (!newPlaylist)
         return res.status(404).send({ message: 'Invalid new playlist' });
+      if (newPlaylist.user_id !== req.user.id)
+        return res.status(404).send({ message: 'New playlist does not exist' });
     });
 
   Playlist.findByPk(playlistId)
