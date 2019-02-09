@@ -18,6 +18,6 @@ const Playlist = sequelize.define(
   }
 );
 
-Playlist.hasMany(Song);
+Playlist.hasMany(Song, { onDelete: 'cascade' });
 
 module.exports = Playlist;
